@@ -1,0 +1,14 @@
+{
+    "Items": [
+        {
+            "Name": "Item A",
+            "Type": "Concrete",
+            "Limit": ""
+        },
+        {
+            "Name": "Item B",
+            "Type": "TimeLimited",
+            "Limit": "2024-05-28T00:00:00"
+        }
+    ]
+}
