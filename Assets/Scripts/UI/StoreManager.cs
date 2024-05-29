@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ public class StoreManager : MonoBehaviour
         PurchaseMethodRegistry.RegisterPurchaseMethod(typeof(InGameCurrencyPurchase));
         PurchaseMethodRegistry.RegisterPurchaseMethod(typeof(OtherCurrencyPurchase));
     }
-
     void Start()
     {
         DisplayItems();

@@ -11,16 +11,9 @@ public class Slot : MonoBehaviour
     [SerializeField] private GameObject buttonPrefab;
     private List<Button> purchaseButtons = new List<Button>();
     private ItemTimer itemTimer;
-    private List<Item> itemList;
     public void Initialize(Item item)
     {
         title.text = item.Name;
-        if (item is TimeLimitedItem && !item.IsAvailable)
-        {
-            itemTimer = new ItemTimer(content, ((TimeLimitedItem)item).Limit, this);
-            itemTimer.OnTimerExpired += () => OnTimerExpired(item);
-            itemTimer.StartTimer();
-        }
         
         for (int i = 0; i < PurchaseMethodRegistry.purchaseMethods.Count; i++)
         {
@@ -30,6 +23,16 @@ public class Slot : MonoBehaviour
             button.onClick.AddListener(()=>PurchaseItem(method, item));
             purchaseButtons.Add(button);
         }
+        
+        if (item is TimeLimitedItem && !item.IsAvailable)
+        {
+            itemTimer = new ItemTimer(content, ((TimeLimitedItem)item).Limit, this);
+            itemTimer.OnTimerExpired += () => {
+                LockItem();
+            };
+            itemTimer.StartTimer();
+        }
+        
         if (item.IsAvailable) 
         {
             content.text = "Purchased";
@@ -45,12 +48,6 @@ public class Slot : MonoBehaviour
         content.text = "Purchased";
         LockItem();
         SaveSystem.Save(old, item);
-    }
-    private void OnTimerExpired(Item item)
-    {
-        item.IsAvailable = false;
-        LockItem();
-        SaveSystem.Save(itemList);
     }
     public void LockItem()
     {
