@@ -20,8 +20,3 @@ public class OtherCurrencyPurchase : IPurchaseMethod
         Debug.Log($"{item.Name} purchased by other currency");
     }
 }
-
-public enum Currency {
-    InGame,
-    Other
-}

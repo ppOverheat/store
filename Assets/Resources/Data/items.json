@@ -10,7 +10,47 @@
       },
       {
         "Type": "TimeLimitedItem",
-        "Arguments": "{\"Limit\":\"2024-06-1T00:00:00\",\"Name\":\"Item C\",\"IsAvailable\":false}"
+        "Arguments": "{\"Limit\":\"2024-06-01T00:00:00\",\"Name\":\"Item C\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "ConcreteItem",
+        "Arguments": "{\"Name\":\"Item D\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-07-30T00:00:00\",\"Name\":\"Item E\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-06-11T00:00:00\",\"Name\":\"Item F\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-06-11T00:00:00\",\"Name\":\"Item G\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2025-06-11T00:00:00\",\"Name\":\"Item H\",\"IsAvailable\":true,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
+      },
+      {
+        "Type": "ConcreteItem",
+        "Arguments": "{\"Name\":\"Item A\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-05-30T00:00:00\",\"Name\":\"Item B\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-06-01T00:00:00\",\"Name\":\"Item C\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
+      },
+      {
+        "Type": "ConcreteItem",
+        "Arguments": "{\"Name\":\"Item D\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":5000}}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-07-30T00:00:00\",\"Name\":\"Item E\",\"IsAvailable\":false,\"Cost\":{\"InGame\":1600,\"Other\":3499}}"
       }
     ]
   }

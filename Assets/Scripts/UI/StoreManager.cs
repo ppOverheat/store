@@ -5,7 +5,6 @@ public class StoreManager : MonoBehaviour
 {
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private TextAsset jsonFile;
-    private List<Item> items = new List<Item>();
 
     void Awake()
     {
@@ -15,18 +14,13 @@ public class StoreManager : MonoBehaviour
 
     void Start()
     {
-        LoadItems();
-    }
-
-    private void LoadItems()
-    {
-        items = SaveSystem.Load();
-        if (items.Count==0) items = SaveSystem.Load(jsonFile.text);
         DisplayItems();
     }
 
     private void DisplayItems()
     {
+        List<Item> items = SaveSystem.Load();
+        if (items.Count==0) items = SaveSystem.Load(jsonFile.text);
         foreach (Item item in items)
         {
             var slot = Instantiate(slotPrefab, transform).GetComponent<Slot>();

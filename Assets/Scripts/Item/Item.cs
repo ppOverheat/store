@@ -19,6 +19,7 @@ public abstract class Item
 {
     public string Name { get; set; }
     public bool IsAvailable { get; set; }
+    public Dictionary<Currency,int> Cost { get; set; }
     public abstract void Purchase(IPurchaseMethod purchaseMethod);
 }
 
@@ -46,4 +47,10 @@ public class ConcreteItem : Item
         purchaseMethod.Purchase(this);
         IsAvailable = true;
     }
+}
+
+public enum Currency
+{
+    InGame,
+    Other
 }
