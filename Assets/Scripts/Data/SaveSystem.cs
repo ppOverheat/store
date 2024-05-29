@@ -6,9 +6,9 @@ using System.Collections.Generic;
 public static class SaveSystem
 {
     private static string save_path = $"{Application.persistentDataPath}/save.json";
+    private static List<Item> items = new List<Item>();
     public static List<Item> Load()
     {
-        List<Item> items = new List<Item>();
         try 
         {
             if (File.Exists(save_path))
@@ -26,7 +26,6 @@ public static class SaveSystem
 
     public static List<Item> Load(string jsonString)
     {
-        List<Item> items = new List<Item>();
         try 
         {
             ItemDataList data = JsonConvert.DeserializeObject<ItemDataList>(jsonString);
@@ -37,6 +36,15 @@ public static class SaveSystem
         {
         }
         return items;
+    }
+
+    public static void Save(Item old, Item item)
+    {
+        if (items.Contains(old)) 
+        {
+            items[items.IndexOf(old)] = item;
+            Save(items);
+        }
     }
 
     public static void Save(List<Item> data)

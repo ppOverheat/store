@@ -17,17 +17,23 @@ public class Slot : MonoBehaviour
     private Coroutine timer = null;
     public void Initialize(Item item)
     {
+        Debug.Log(item.IsAvailable);
         title.text = item.Name;
-        if (item is TimeLimitedItem)
-        {
+        if (item is TimeLimitedItem && !item.IsAvailable)
             SetTimer(((TimeLimitedItem)item).Limit);
-        }
+        
         for (int i = 0; i < PurchaseMethodRegistry.purchaseMethods.Count; i++)
         {
             var button = Instantiate(buttonPrefab, buttonsGrid).GetComponent<Button>();
             var method = PurchaseMethodRegistry.GetPurchaseMethod(i);
+            button.GetComponentInChildren<TextMeshProUGUI>().text = method.GetType().ToString();
             button.onClick.AddListener(()=>PurchaseItem(method, item));
             purchaseButtons.Add(button);
+        }
+        if (item.IsAvailable) 
+        {
+            content.text = "Purchased";
+            LockItem();
         }
     }
 
@@ -54,25 +60,25 @@ public class Slot : MonoBehaviour
 
     private IEnumerator UpdateTimer(DateTime limit)
     {
-        Debug.Log(limit);
         TimeSpan timeRemaining = limit - DateTime.UtcNow;
-        Debug.Log($"{limit}-{DateTime.UtcNow}={(int)timeRemaining.TotalHours} : {timeRemaining.Minutes:D2} : {timeRemaining.Seconds:D2}");
-
-        do {
+        while (timeRemaining > TimeSpan.Zero) 
+        {
             timeRemaining = limit - DateTime.UtcNow;//GetCurrentDateTime();
             content.text = $"{(int)timeRemaining.TotalHours} : {timeRemaining.Minutes:D2} : {timeRemaining.Seconds:D2}";
             yield return delay;
-        } while (timeRemaining > TimeSpan.Zero);
+        }
         content.text = "Expired";
         LockItem();
     }
 
     private void PurchaseItem(IPurchaseMethod purchaseMethod, Item item) 
     {
+        Item old = item;
         item.Purchase(purchaseMethod);
         if (timer != null) StopCoroutine(timer);
         content.text = "Purchased";
         LockItem();
+        SaveSystem.Save(old, item);
     }
 
     private void LockItem()

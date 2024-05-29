@@ -18,7 +18,7 @@ public class ItemData
 public abstract class Item
 {
     public string Name { get; set; }
-    public bool IsAvailable { get; protected set; }
+    public bool IsAvailable { get; set; }
     public abstract void Purchase(IPurchaseMethod purchaseMethod);
 }
 
