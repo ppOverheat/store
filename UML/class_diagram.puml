@@ -1,0 +1,50 @@
+@startuml class_diagram
+
+abstract class Item {
+    +string Name
+    +bool IsAvailable
+    +Dictionary<Currency, int> Cost
+    +void Purchase(IPurchaseMethod purchaseMethod)
+}
+
+class TimeLimitedItem {
+    +DateTime Limit
+    +void Purchase(IPurchaseMethod purchaseMethod)
+}
+
+class ConcreteItem {
+    +void Purchase(IPurchaseMethod purchaseMethod)
+}
+
+class ItemCreator {
+    +static Item Create(string className, string args)
+}
+
+class ItemData {
+    +string Type
+    +string Arguments
+}
+
+class ItemDataList {
+    +List<ItemData> Items
+}
+
+enum Currency {
+    +InGame
+    +Other
+}
+
+class SaveSystem {
+    +static List<Item> Load()
+    +static List<Item> Load(string jsonString)
+    +static void Save(Item old, Item item)
+    +static void Save(List<Item> data)
+}
+
+Item <|-- ConcreteItem
+Item <|-- TimeLimitedItem
+
+ItemDataList "1" *- "many" ItemData
+SaveSystem *- ItemDataList
+Item <|.. SaveSystem
+@enduml

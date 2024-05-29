@@ -1,0 +1,40 @@
+@startuml class_diagram_1
+
+class ItemTimer {
+    -TextMeshProUGUI content
+    -DateTime limit
+    -Coroutine timerCoroutine
+    -MonoBehaviour coroutineOwner
+    -WaitForSecondsRealtime delay
+    -DateTime startTime
+    +event Action OnTimerExpired
+    +ItemTimer(TextMeshProUGUI content, DateTime limit, MonoBehaviour coroutineOwner)
+    +void StartTimer()
+    +void StopTimer()
+    +IEnumerator UpdateTimer()
+    +DateTime GetCurrentDateTime()
+}
+
+class Slot {
+    -TextMeshProUGUI title
+    -TextMeshProUGUI content
+    -Transform buttonsGrid
+    -GameObject buttonPrefab
+    -List<Button> purchaseButtons
+    -ItemTimer itemTimer
+    -List<Item> itemList
+    +void Initialize(Item item)
+    +void PurchaseItem(IPurchaseMethod purchaseMethod, Item item)
+    +void OnTimerExpired(Item item)
+    +void LockItem()
+}
+
+class StoreManager {
+    -GameObject slotPrefab
+    -TextAsset jsonFile
+    +void Awake()
+    +void Start()
+    +void DisplayItems()
+}
+Slot o-- ItemTimer
+@enduml

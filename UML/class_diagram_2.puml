@@ -1,0 +1,18 @@
+@startuml class_diagram_2
+
+interface IPurchaseMethod {
+    +void Purchase(Item item)
+}
+
+class InGameCurrencyPurchase {
+    +void Purchase(Item item)
+}
+
+class OtherCurrencyPurchase {
+    +void Purchase(Item item)
+}
+
+IPurchaseMethod <|.. InGameCurrencyPurchase
+IPurchaseMethod <|.. OtherCurrencyPurchase
+
+@enduml
