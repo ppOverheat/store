@@ -5,27 +5,32 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Net;
 using System.Globalization;
+using System.Collections.Generic;
 
 public class Slot : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI title, content;
-    [SerializeField] private Button[] purchaseButtons;
+    [SerializeField] private Transform buttonsGrid;
+    [SerializeField] private GameObject buttonPrefab;
+    private List<Button> purchaseButtons = new List<Button>();
     private WaitForSecondsRealtime delay = new WaitForSecondsRealtime(1);
     private Coroutine timer = null;
     public void Initialize(Item item)
     {
         title.text = item.Name;
-        if (item is TimeLimitedItem) SetTimer(((TimeLimitedItem)item).Limit);
-        int index = 0;
-        foreach(Currency currency in System.Enum.GetValues(typeof(Currency))) 
+        if (item is TimeLimitedItem)
         {
-            var purchaseMethod = GetMethod(currency);
-            if (index < purchaseButtons.Length)
-            {
-                purchaseButtons[index++].onClick.AddListener(()=>PurchaseItem(purchaseMethod, item));
-            }
+            SetTimer(((TimeLimitedItem)item).Limit);
+        }
+        for (int i = 0; i < PurchaseMethodRegistry.purchaseMethods.Count; i++)
+        {
+            var button = Instantiate(buttonPrefab, buttonsGrid).GetComponent<Button>();
+            var method = PurchaseMethodRegistry.GetPurchaseMethod(i);
+            button.onClick.AddListener(()=>PurchaseItem(method, item));
+            purchaseButtons.Add(button);
         }
     }
+
     private DateTime GetCurrentDateTime()
     {
         try
@@ -38,7 +43,7 @@ public class Slot : MonoBehaviour
         }
         catch (WebException)
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
     }
 
@@ -49,10 +54,13 @@ public class Slot : MonoBehaviour
 
     private IEnumerator UpdateTimer(DateTime limit)
     {
-        TimeSpan timeRemaining;
+        Debug.Log(limit);
+        TimeSpan timeRemaining = limit - DateTime.UtcNow;
+        Debug.Log($"{limit}-{DateTime.UtcNow}={(int)timeRemaining.TotalHours} : {timeRemaining.Minutes:D2} : {timeRemaining.Seconds:D2}");
+
         do {
-            timeRemaining = limit - GetCurrentDateTime();
-            content.text = $"{timeRemaining.Hours:D2} : {timeRemaining.Minutes:D2} : {timeRemaining.Seconds:D2}";
+            timeRemaining = limit - DateTime.UtcNow;//GetCurrentDateTime();
+            content.text = $"{(int)timeRemaining.TotalHours} : {timeRemaining.Minutes:D2} : {timeRemaining.Seconds:D2}";
             yield return delay;
         } while (timeRemaining > TimeSpan.Zero);
         content.text = "Expired";
@@ -71,15 +79,4 @@ public class Slot : MonoBehaviour
     {
         foreach (Button button in purchaseButtons) button.interactable = false;
     }
-
-    IPurchaseMethod GetMethod(Currency currency) 
-    {
-        return currency switch
-        {
-            Currency.InGame => new InGameCurrencyPurchase(),
-            Currency.Other => new OtherCurrencyPurchase(),
-            _ => throw new ArgumentOutOfRangeException(nameof(currency), currency, null)
-        };
-    }
-
 }

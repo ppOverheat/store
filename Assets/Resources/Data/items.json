@@ -1,14 +1,16 @@
 {
     "Items": [
-        {
-            "Name": "Item A",
-            "Type": "Concrete",
-            "Limit": ""
-        },
-        {
-            "Name": "Item B",
-            "Type": "TimeLimited",
-            "Limit": "2024-05-28T00:00:00"
-        }
+      {
+        "Type": "ConcreteItem",
+        "Arguments": "{\"Name\":\"Item A\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-05-30T00:00:00\",\"Name\":\"Item B\",\"IsAvailable\":false}"
+      },
+      {
+        "Type": "TimeLimitedItem",
+        "Arguments": "{\"Limit\":\"2024-06-1T00:00:00\",\"Name\":\"Item C\",\"IsAvailable\":false}"
+      }
     ]
-}
+  }

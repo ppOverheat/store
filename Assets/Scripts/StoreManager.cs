@@ -8,42 +8,24 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private TextAsset jsonFile;
     private List<Item> items = new List<Item>();
 
+    void Awake()
+    {
+        PurchaseMethodRegistry.RegisterPurchaseMethod(typeof(InGameCurrencyPurchase));
+        PurchaseMethodRegistry.RegisterPurchaseMethod(typeof(OtherCurrencyPurchase));
+    }
+
     void Start()
     {
-        LoadItemsFromJson();
+        LoadItems();
+    }
+
+    private void LoadItems()
+    {
+        items = SaveSystem.Load();
+        if (items.Count==0) items = SaveSystem.Load(jsonFile.text);
         DisplayItems();
     }
-    private void LoadItemsFromJson()
-    {
-        if (jsonFile != null)
-        {
-            ItemDataList itemDataList = JsonUtility.FromJson<ItemDataList>(jsonFile.text);
-            foreach (ItemData itemData in itemDataList.Items)
-            {
-                Item item = CreateItemFromData(itemData);
-                if (item != null)
-                {
-                    items.Add(item);
-                }
-            }
-        }
-    }
-    private Item CreateItemFromData(ItemData data)
-    {
-        switch (data.Type)
-        {
-            case "Concrete":
-                return new ConcreteItem { Name = data.Name };
-            case "TimeLimited":
-                DateTime limit;
-                if (DateTime.TryParse(data.Limit, out limit))
-                {
-                    return new TimeLimitedItem { Name = data.Name, Limit = limit };
-                }
-                break;
-        }
-        return null;
-    }
+
     private void DisplayItems()
     {
         foreach (Item item in items)
