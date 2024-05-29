@@ -1,6 +1,6 @@
 # Project Overview
 ----------------------
-## Class Diagram
+#### Class Diagram
 
 ![Class Diagram](UML/class_diagram.png)
 
